@@ -35,9 +35,9 @@ namespace OffersAPIClient.Communication
         private async Task<TOut> SendRequest<TOut>(string uri, StringContent postData)
         {
             if (!client.DefaultRequestHeaders.Contains("ApiKey"))
-                client.DefaultRequestHeaders.Add("ApiKey", _config["ApiKey"]);
+                client.DefaultRequestHeaders.Add("ApiKey", _config.GetValue<string>("ApiKey"));
 
-            var MaxRetries = Convert.ToInt32(_config["ReTryCount"]);
+            var MaxRetries = _config.GetValue<int>("ReTryCount");
 
             for (int i = 0; i < MaxRetries; i++)
             {
