@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using OffersAPIClient.Common.Extension;
 using OffersAPIClient.Common.Models;
+using OffersAPIClient.Common.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,11 +12,13 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
 {
     public class PremierAPIClient : IGetClientOffer
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
+        private readonly IRestClient _restClient;
 
-        public PremierAPIClient(IConfiguration configuration)
+        public PremierAPIClient(IConfiguration configuration, IRestClient restClient)
         {
             Configuration = configuration;
+            _restClient = restClient;
         }
 
         public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
@@ -25,30 +28,18 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
             var offerResponse = new BestOfferResponse();
             offerResponse.CompanyName = Configuration["PremierAPIConfig:CompanyName"];
 
-            var postData = new API3Request
+            var postData = new PremierAPIRequest
             {
                 source = request.Source,
                 destination = request.Destination,
                 packages = string.Join(",", request.Carton)
             };
 
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("ApiKey", Configuration["ApiKey"]);
-                var content = new StringContent(Extension.Serialize(postData).ToString(), Encoding.UTF8, "application/xml");
-                var response = await client.PostAsync(baseUrl, content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var dataObjects = Extension.Deserialize<PremierAPIResponse>(await response.Content.ReadAsStringAsync());
-
-                    offerResponse.BestPrice = dataObjects.quote;
-                }
-                else
-                {
-                    throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
-                }
-            }
+            var response = await _restClient.PostXMLRequest<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData);
+            if(response == default(PremierAPIResponse))
+                throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
+            else
+                offerResponse.BestPrice = response.quote;
 
             return offerResponse;
         }

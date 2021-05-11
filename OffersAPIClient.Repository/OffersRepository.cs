@@ -10,7 +10,7 @@ namespace OffersAPIClient.Repository
 {
     public class OffersRepository : IOffersRepository
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
         private readonly IEnumerable<IGetClientOffer> _getOffers;
 
         public OffersRepository(IConfiguration configuration, IEnumerable<IGetClientOffer> getOffers)
@@ -21,15 +21,16 @@ namespace OffersAPIClient.Repository
 
         public async Task<BestOfferResponse> GetBestDeal(BestOfferRequest request)
         {
-            List<BestOfferResponse> listOffers = new List<BestOfferResponse>();
+            List<Task<BestOfferResponse>> listOffers = new List<Task<BestOfferResponse>>();
 
             foreach (var offer in _getOffers)
             {
-                listOffers.Add(await offer.GetOffer(request));
+                listOffers.Add(offer.GetOffer(request));
             }
 
-            var bestPrice = listOffers.Where(a => a.BestPrice > 0).Min(a => a.BestPrice);
-            var bestOffer = listOffers.FirstOrDefault(a => a.BestPrice == bestPrice);
+            var listOffersData = await Task.WhenAll(listOffers);
+            var bestPrice = listOffersData.Where(a => a.BestPrice > 0).Min(a => a.BestPrice);
+            var bestOffer = listOffersData.FirstOrDefault(a => a.BestPrice == bestPrice);
 
             return bestOffer;
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using OffersAPIClient.Common.Models;
+using OffersAPIClient.Common.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,11 +12,13 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
 {
     public class RX2GoAPIClient : IGetClientOffer
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
+        private readonly IRestClient _restClient;
 
-        public RX2GoAPIClient(IConfiguration configuration)
+        public RX2GoAPIClient(IConfiguration configuration, IRestClient restClient)
         {
             Configuration = configuration;
+            _restClient = restClient;
         }
 
         public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
@@ -31,23 +34,11 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
                 CartonDismensions = request.Carton
             };
 
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("ApiKey", Configuration["ApiKey"]);
-                var content = new StringContent(JsonConvert.SerializeObject(postData), Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(baseUrl, content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var dataObjects = JsonConvert.DeserializeObject<RX2GoAPIResponse>(await response.Content.ReadAsStringAsync());
-
-                    offerResponse.BestPrice = dataObjects.total;
-                }
-                else
-                {
-                    throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
-                }
-            }
+            var response = await _restClient.PostRequest<object, RX2GoAPIResponse>(baseUrl, postData);
+            if (response == default(RX2GoAPIResponse))
+                throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
+            else
+                offerResponse.BestPrice = response.total;
 
             return offerResponse;
         }

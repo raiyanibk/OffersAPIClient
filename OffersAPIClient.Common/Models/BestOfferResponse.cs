@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OffersAPIClient.Common.Models
 {
-    public class API3Request
+    public class PremierAPIRequest
     {
         public string source { get; set; }
         public string destination { get; set; }
