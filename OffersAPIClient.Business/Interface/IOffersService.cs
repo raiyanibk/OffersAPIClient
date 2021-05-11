@@ -8,6 +8,6 @@ namespace OffersAPIClient.Business.Interface
 {
     public interface IOffersService
     {
-        Task<BestOfferResponse> GetBestOffer(BestOfferRequest request);
+        Task<BestOfferResponse> GetBestDeal(BestOfferRequest request);
     }
 }

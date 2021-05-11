@@ -22,7 +22,7 @@ namespace OffersAPIClient.Controllers
         [Route("getbestdeal")]
         public async Task<IActionResult> GetBestDeal(BestOfferRequest request)
         {
-            var bestDeal = await _offersService.GetBestOffer(request);
+            var bestDeal = await _offersService.GetBestDeal(request);
 
             return Ok(bestDeal);
         }

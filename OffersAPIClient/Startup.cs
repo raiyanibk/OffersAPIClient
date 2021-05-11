@@ -1,18 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using OffersAPIClient.Business;
 using OffersAPIClient.Business.Interface;
+using OffersAPIClient.Middleware;
 using OffersAPIClient.Repository;
 using OffersAPIClient.Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using OffersAPIClient.Repository.ThirdPartyClients;
 
 namespace OffersAPIClient
 {
@@ -34,6 +30,10 @@ namespace OffersAPIClient
 
             services.AddTransient<IOffersService, OffersService>();
             services.AddTransient<IOffersRepository, OffersRepository>();
+            
+            services.AddTransient<IGetClientOffer, RX2GoAPIClient>();
+            services.AddTransient<IGetClientOffer, FedXAPIClient>();
+            services.AddTransient<IGetClientOffer, PremierAPIClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +54,7 @@ namespace OffersAPIClient
             });
 
             app.UseRouting();
-
+            app.ConfigureCustomExceptionMiddleware();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

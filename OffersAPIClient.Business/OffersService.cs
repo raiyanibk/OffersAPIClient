@@ -16,9 +16,9 @@ namespace OffersAPIClient.Business
             _offersRepository = offersRepository;
         }
 
-        public async Task<BestOfferResponse> GetBestOffer(BestOfferRequest request)
+        public async Task<BestOfferResponse> GetBestDeal(BestOfferRequest request)
         {
-            return await _offersRepository.GetBestOffer(request);
+            return await _offersRepository.GetBestDeal(request);
         }
 
     }
