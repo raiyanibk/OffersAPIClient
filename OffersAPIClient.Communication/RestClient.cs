@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using OffersAPIClient.Common.Service.Interface;
+using OffersAPIClient.Common.Extension;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Common.Service
+namespace OffersAPIClient.Communication
 {
     public class RestClient : IRestClient
     {
@@ -20,16 +21,13 @@ namespace OffersAPIClient.Common.Service
             _config = configuration;
         }
 
-        public async Task<TOut> PostRequest<TIn, TOut>(string uri, TIn content)
+        public async Task<TOut> PostRequest<TIn, TOut>(string uri, TIn content, string application)
         {
-            var serialized = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
-
-            return await SendRequest<TOut>(uri, serialized);
-        }
-
-        public async Task<TOut> PostXMLRequest<TIn, TOut>(string uri, TIn content)
-        {
-            var serialized = new StringContent(Extension.Extension.Serialize(content).ToString(), Encoding.UTF8, "application/xml");
+            StringContent serialized;
+            if (application == MediaTypeNames.Application.Xml)
+                serialized = new StringContent(Extension.Serialize(content).ToString(), Encoding.UTF8, "application/xml");
+            else
+                serialized = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
 
             return await SendRequest<TOut>(uri, serialized);
         }
@@ -47,7 +45,15 @@ namespace OffersAPIClient.Common.Service
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var dataObjects = Extension.Extension.Deserialize<TOut>(await response.Content.ReadAsStringAsync());
+                        TOut dataObjects;
+                        if (response.Content.Headers.ContentType.MediaType == MediaTypeNames.Application.Xml)
+                        {
+                            dataObjects = Extension.Deserialize<TOut>(await response.Content.ReadAsStringAsync());
+                        }
+                        else
+                        {
+                            dataObjects = JsonConvert.DeserializeObject<TOut>(await response.Content.ReadAsStringAsync());
+                        }
 
                         return dataObjects;
                     }

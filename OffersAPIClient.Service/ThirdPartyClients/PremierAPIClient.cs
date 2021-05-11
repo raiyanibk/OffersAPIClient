@@ -1,14 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Common.Extension;
 using OffersAPIClient.Common.Models;
-using OffersAPIClient.Common.Service.Interface;
+using OffersAPIClient.Communication;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Repository.ThirdPartyClients
+namespace OffersAPIClient.Service.ThirdPartyClients
 {
     public class PremierAPIClient : IGetClientOffer
     {
@@ -23,10 +20,10 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
 
         public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
         {
-            var baseUrl = Configuration["PremierAPIConfig:BaseURL"];
+            var baseUrl = Configuration.GetValue<string>("PremierAPIConfig:BaseURL");
 
             var offerResponse = new BestOfferResponse();
-            offerResponse.CompanyName = Configuration["PremierAPIConfig:CompanyName"];
+            offerResponse.CompanyName = Configuration.GetValue<string>("PremierAPIConfig:CompanyName");
 
             var postData = new PremierAPIRequest
             {
@@ -35,7 +32,7 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
                 packages = string.Join(",", request.Carton)
             };
 
-            var response = await _restClient.PostXMLRequest<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData);
+            var response = await _restClient.PostRequest<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData, MediaTypeNames.Application.Xml);
             if(response == default(PremierAPIResponse))
                 throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
             else

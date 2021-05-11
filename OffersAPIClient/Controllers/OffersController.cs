@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OffersAPIClient.Business.Interface;
 using OffersAPIClient.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using OffersAPIClient.Service.Interface;
 using System.Threading.Tasks;
 
 namespace OffersAPIClient.Controllers

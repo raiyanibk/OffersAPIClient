@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OffersAPIClient.Repository\OffersAPIClient.Repository.csproj" />
+    <ProjectReference Include="..\OffersAPIClient.Repository\OffersAPIClient.Service.csproj" />
   </ItemGroup>
 
 </Project>

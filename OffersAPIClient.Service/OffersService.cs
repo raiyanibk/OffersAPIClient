@@ -1,19 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
 using OffersAPIClient.Common.Models;
-using OffersAPIClient.Repository.Interface;
-using OffersAPIClient.Repository.ThirdPartyClients;
+using OffersAPIClient.Service.Interface;
+using OffersAPIClient.Service.ThirdPartyClients;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Repository
+namespace OffersAPIClient.Service
 {
-    public class OffersRepository : IOffersRepository
+    public class OffersService : IOffersService
     {
         private IConfiguration Configuration { get; }
         private readonly IEnumerable<IGetClientOffer> _getOffers;
 
-        public OffersRepository(IConfiguration configuration, IEnumerable<IGetClientOffer> getOffers)
+        public OffersService(IConfiguration configuration, IEnumerable<IGetClientOffer> getOffers)
         {
             Configuration = configuration;
             _getOffers = getOffers;

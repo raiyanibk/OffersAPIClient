@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OffersAPIClient.Business;
-using OffersAPIClient.Business.Interface;
-using OffersAPIClient.Common.Service;
-using OffersAPIClient.Common.Service.Interface;
+using OffersAPIClient.Communication;
 using OffersAPIClient.Middleware;
-using OffersAPIClient.Repository;
-using OffersAPIClient.Repository.Interface;
-using OffersAPIClient.Repository.ThirdPartyClients;
+using OffersAPIClient.Service;
+using OffersAPIClient.Service.Interface;
+using OffersAPIClient.Service.ThirdPartyClients;
 
 namespace OffersAPIClient
 {
@@ -31,7 +28,6 @@ namespace OffersAPIClient
             services.AddMvc().AddXmlDataContractSerializerFormatters().AddXmlSerializerFormatters();
 
             services.AddTransient<IOffersService, OffersService>();
-            services.AddTransient<IOffersRepository, OffersRepository>();
             
             services.AddTransient<IGetClientOffer, RX2GoAPIClient>();
             services.AddTransient<IGetClientOffer, FedXAPIClient>();

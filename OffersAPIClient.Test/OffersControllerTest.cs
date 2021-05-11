@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OffersAPIClient.Business.Interface;
 using OffersAPIClient.Controllers;
+using OffersAPIClient.Service.Interface;
 using System;
 using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@ namespace OffersAPIClient.Test
         Program.CreateHostBuilder(new string[] { }).Build().Services;
 
         [TestMethod]
-        public async Task GetBestOffer_Test_1()
+        public async Task GetBestDeal_Test_1()
         {
 
             var myService = _services.GetRequiredService<IOffersService>();
@@ -33,7 +33,7 @@ namespace OffersAPIClient.Test
         }
 
         [TestMethod]
-        public async Task GetBestOffer_Test_2()
+        public async Task GetBestDeal_Test_2()
         {
 
             var myService = _services.GetRequiredService<IOffersService>();
@@ -52,7 +52,7 @@ namespace OffersAPIClient.Test
         }
 
         [TestMethod]
-        public async Task GetBestOffer_Test_3()
+        public async Task GetBestDeal_Test_3()
         {
 
             var myService = _services.GetRequiredService<IOffersService>();
@@ -71,7 +71,7 @@ namespace OffersAPIClient.Test
         }
 
         [TestMethod]
-        public async Task GetBestOffer_Test_4()
+        public async Task GetBestDeal_Test_4()
         {
 
             var myService = _services.GetRequiredService<IOffersService>();
@@ -90,7 +90,7 @@ namespace OffersAPIClient.Test
         }
 
         [TestMethod]
-        public async Task GetBestOffer_Test_5()
+        public async Task GetBestDeal_Test_5()
         {
 
             var myService = _services.GetRequiredService<IOffersService>();
@@ -109,7 +109,7 @@ namespace OffersAPIClient.Test
         }
 
         [TestMethod]
-        public async Task GetBestOffer_Test_6()
+        public async Task GetBestDeal_Test_6()
         {
 
             var myService = _services.GetRequiredService<IOffersService>();

@@ -10,7 +10,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Repository.ThirdPartyClients
+namespace OffersAPIClient.Service.ThirdPartyClients
 {
     public interface IGetClientOffer
     {

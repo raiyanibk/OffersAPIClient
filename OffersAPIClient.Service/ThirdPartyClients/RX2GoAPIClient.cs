@@ -1,14 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using OffersAPIClient.Common.Models;
-using OffersAPIClient.Common.Service.Interface;
+using OffersAPIClient.Communication;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Repository.ThirdPartyClients
+namespace OffersAPIClient.Service.ThirdPartyClients
 {
     public class RX2GoAPIClient : IGetClientOffer
     {
@@ -23,9 +19,9 @@ namespace OffersAPIClient.Repository.ThirdPartyClients
 
         public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
         {
-            var baseUrl = Configuration["RX2GoAPIConfig:BaseURL"];
+            var baseUrl = Configuration.GetValue<string>("RX2GoAPIConfig:BaseURL");
             var offerResponse = new BestOfferResponse();
-            offerResponse.CompanyName = Configuration["RX2GoAPIConfig:CompanyName"];
+            offerResponse.CompanyName = Configuration.GetValue<string>("RX2GoAPIConfig:CompanyName");
 
             var postData = new
             {

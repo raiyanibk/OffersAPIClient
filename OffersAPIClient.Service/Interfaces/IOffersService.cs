@@ -1,9 +1,9 @@
 ﻿using OffersAPIClient.Common.Models;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Repository.Interface
+namespace OffersAPIClient.Service.Interface
 {
-    public interface IOffersRepository
+    public interface IOffersService
     {
         Task<BestOfferResponse> GetBestDeal(BestOfferRequest request);
     }
