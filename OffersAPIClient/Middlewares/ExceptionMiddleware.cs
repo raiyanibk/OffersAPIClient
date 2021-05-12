@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using OffersAPIClient.Utils.CustomException;
 using OffersAPIClient.Utils.Models;
 using System;
 using System.Collections.Generic;
@@ -32,15 +33,35 @@ namespace OffersAPIClient.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            var exceptionMessage = exception.InnerException != null ? exception.InnerException.Message : exception.Message;
+            var statusCode = (int)HttpStatusCode.InternalServerError;
+            switch (exception.GetType().Name)
+            {
+                case nameof(UnauthorizedException):
+                    statusCode = (int)HttpStatusCode.Unauthorized;
 
-            _logger.LogError($"Something went wrong : {exception.Message}");
+                    break;
+                case nameof(BadRequestException):
+                    statusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+                case nameof(NotFoundException):
+                    statusCode = (int)HttpStatusCode.NotFound;
+                    break;
+                default:
+                    statusCode = (int)HttpStatusCode.InternalServerError;
+                    exceptionMessage = "Something went wrong";
+                    break;
+            }
+
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = statusCode;
+
+            _logger.LogError($"{exception.Message}");
 
             return context.Response.WriteAsync(new ErrorDetails()
             {
-                StatusCode = context.Response.StatusCode,
-                Message = exception.Message
+                StatusCode = statusCode,
+                Message = exceptionMessage
             }.ToString());
         }
     }
