@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OffersAPIClient.Common.Models
+namespace OffersAPIClient.Utils.Models
 {
     public class BestOfferRequest
     {

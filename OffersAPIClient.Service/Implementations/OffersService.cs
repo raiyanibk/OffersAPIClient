@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Common.Models;
-using OffersAPIClient.Service.Interface;
-using OffersAPIClient.Service.ThirdPartyClients;
+using OffersAPIClient.Utils.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

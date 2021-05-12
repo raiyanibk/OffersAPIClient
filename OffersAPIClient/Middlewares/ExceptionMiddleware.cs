@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using OffersAPIClient.Common.Models;
+using OffersAPIClient.Utils.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

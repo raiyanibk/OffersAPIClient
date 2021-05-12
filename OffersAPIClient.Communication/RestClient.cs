@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using OffersAPIClient.Common.Extension;
-using System;
-using System.Collections.Generic;
+using OffersAPIClient.Utils.Extension;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;

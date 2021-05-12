@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OffersAPIClient.Common.Models;
-using OffersAPIClient.Service.Interface;
+using OffersAPIClient.Utils.Models;
+using OffersAPIClient.Service;
 using System.Threading.Tasks;
 
 namespace OffersAPIClient.Controllers

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OffersAPIClient.Common\OffersAPIClient.Common.csproj" />
+    <ProjectReference Include="..\OffersAPIClient.Utils\OffersAPIClient.Utils.csproj" />
   </ItemGroup>
 
 </Project>

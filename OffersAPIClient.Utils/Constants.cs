@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OffersAPIClient.Common
+namespace OffersAPIClient.Utils
 {
     public class CompanyName
     {

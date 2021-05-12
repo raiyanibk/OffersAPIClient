@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>OffersAPIClient.Utils</AssemblyName>
+    <RootNamespace>OffersAPIClient.Utils</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

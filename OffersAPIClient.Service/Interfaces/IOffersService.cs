@@ -1,7 +1,7 @@
-﻿using OffersAPIClient.Common.Models;
+﻿using OffersAPIClient.Utils.Models;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Service.Interface
+namespace OffersAPIClient.Service
 {
     public interface IOffersService
     {

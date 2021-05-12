@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAPIClient", "OffersAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAPIClient.Service", "OffersAPIClient.Service\OffersAPIClient.Service.csproj", "{C2A34667-1D7C-46E7-9F62-F11C4DA3AA4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAPIClient.Common", "OffersAPIClient.Common\OffersAPIClient.Common.csproj", "{13F99710-E831-474F-9816-DDBF142D1FA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAPIClient.Utils", "OffersAPIClient.Utils\OffersAPIClient.Utils.csproj", "{13F99710-E831-474F-9816-DDBF142D1FA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAPIClient.Test", "OffersAPIClient.Test\OffersAPIClient.Test.csproj", "{C9E69FB9-6584-4D9F-8221-989FC1E7662E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffersAPIClient.Communication", "OffersAPIClient.Communication\OffersAPIClient.Communication.csproj", "{AD7C0FDE-A9B4-41F7-AD6A-A8093991A9EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAPIClient.Communication", "OffersAPIClient.Communication\OffersAPIClient.Communication.csproj", "{AD7C0FDE-A9B4-41F7-AD6A-A8093991A9EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

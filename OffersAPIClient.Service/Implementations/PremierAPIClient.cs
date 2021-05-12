@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Common.Models;
+using OffersAPIClient.Utils.Models;
 using OffersAPIClient.Communication;
 using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Service.ThirdPartyClients
+namespace OffersAPIClient.Service
 {
     public class PremierAPIClient : IGetClientOffer
     {

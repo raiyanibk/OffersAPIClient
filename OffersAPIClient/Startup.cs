@@ -6,8 +6,6 @@ using Microsoft.Extensions.Hosting;
 using OffersAPIClient.Communication;
 using OffersAPIClient.Middleware;
 using OffersAPIClient.Service;
-using OffersAPIClient.Service.Interface;
-using OffersAPIClient.Service.ThirdPartyClients;
 
 namespace OffersAPIClient
 {

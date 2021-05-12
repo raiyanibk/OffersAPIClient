@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using OffersAPIClient.Common.Extension;
-using OffersAPIClient.Common.Models;
+using OffersAPIClient.Utils.Extension;
+using OffersAPIClient.Utils.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,7 +10,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OffersAPIClient.Service.ThirdPartyClients
+namespace OffersAPIClient.Service
 {
     public interface IGetClientOffer
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace OffersAPIClient.Common.Extension
+namespace OffersAPIClient.Utils.Extension
 {
     public class Extension
     {
