@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OffersAPIClient.Utils
+﻿namespace OffersAPIClient.Utils
 {
     public class CompanyName
     {
