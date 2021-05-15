@@ -34,7 +34,7 @@ namespace OffersAPIClient.Service
             if (response == default(RX2GoAPIResponse))
                 throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
             else
-                offerResponse.BestPrice = response.total;
+                offerResponse.BestPrice = response.Total;
 
             return offerResponse;
         }

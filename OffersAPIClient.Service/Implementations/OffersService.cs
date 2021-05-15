@@ -8,12 +8,10 @@ namespace OffersAPIClient.Service
 {
     public class OffersService : IOffersService
     {
-        private IConfiguration Configuration { get; }
         private readonly IEnumerable<IGetClientOffer> _getOffers;
 
-        public OffersService(IConfiguration configuration, IEnumerable<IGetClientOffer> getOffers)
+        public OffersService(IEnumerable<IGetClientOffer> getOffers)
         {
-            Configuration = configuration;
             _getOffers = getOffers;
         }
 

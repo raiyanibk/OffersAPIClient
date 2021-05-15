@@ -25,16 +25,16 @@ namespace OffersAPIClient.Service
 
             var postData = new
             {
-                consignee = request.Source,
-                consignor = request.Destination,
-                cartons = request.Carton
+                Consignee = request.Source,
+                Consignor = request.Destination,
+                Cartons = request.Carton
             };
 
             var response = await _restClient.PostRequest<object, FedXAPIResponse>(baseUrl, postData);
             if (response == default(FedXAPIResponse))
                 throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
             else
-                offerResponse.BestPrice = response.amount;
+                offerResponse.BestPrice = response.Amount;
 
             return offerResponse;
         }

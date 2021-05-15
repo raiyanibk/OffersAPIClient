@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using OffersAPIClient.Utils.Extension;
-using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -54,11 +53,6 @@ namespace OffersAPIClient.Communication
                         }
 
                         return dataObjects;
-                    }
-                    else if (response.StatusCode == HttpStatusCode.BadRequest)
-                    {
-                        // Don't reattempt a bad request
-                        break;
                     }
                 }
             }

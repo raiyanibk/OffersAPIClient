@@ -6,9 +6,9 @@ namespace OffersAPIClient.Utils.Models
 {
     public class PremierAPIRequest
     {
-        public string source { get; set; }
-        public string destination { get; set; }
-        public string packages { get; set; }
+        public string Source { get; set; }
+        public string Destination { get; set; }
+        public string Packages { get; set; }
     }
 
     public class BestOfferResponse
@@ -19,16 +19,16 @@ namespace OffersAPIClient.Utils.Models
 
     public class RX2GoAPIResponse
     {
-        public decimal total { get; set; }
+        public decimal Total { get; set; }
     }
 
     public class FedXAPIResponse
     {
-        public decimal amount { get; set; }
+        public decimal Amount { get; set; }
     }
 
     public class PremierAPIResponse
     {
-        public decimal quote { get; set; }
+        public decimal Quote { get; set; }
     }
 }

@@ -27,16 +27,16 @@ namespace OffersAPIClient.Service
 
             var postData = new PremierAPIRequest
             {
-                source = request.Source,
-                destination = request.Destination,
-                packages = string.Join(",", request.Carton)
+                Source = request.Source,
+                Destination = request.Destination,
+                Packages = string.Join(",", request.Carton)
             };
 
             var response = await _restClient.PostRequest<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData, MediaTypeNames.Application.Xml);
             if(response == default(PremierAPIResponse))
                 throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
             else
-                offerResponse.BestPrice = response.quote;
+                offerResponse.BestPrice = response.Quote;
 
             return offerResponse;
         }
