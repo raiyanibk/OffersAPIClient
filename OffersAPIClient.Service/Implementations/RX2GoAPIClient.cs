@@ -31,8 +31,9 @@ namespace OffersAPIClient.Service
             };
 
             var response = await _restClient.PostRequest<object, RX2GoAPIResponse>(baseUrl, postData);
+
             if (response == default(RX2GoAPIResponse))
-                throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
+                offerResponse.BestPrice = decimal.Zero;
             else
                 offerResponse.BestPrice = response.Total;
 

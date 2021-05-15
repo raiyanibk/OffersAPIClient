@@ -11,4 +11,11 @@ namespace OffersAPIClient.Utils
         public const string Premier = "Premier";
 
     }
+
+    public class ConfigKey
+    {
+        public const string ApiKey = "ApiKey";
+        public const string ReTryCount = "ReTryCount";
+
+    }
 }

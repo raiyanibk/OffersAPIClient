@@ -32,7 +32,7 @@ namespace OffersAPIClient.Service
 
             var response = await _restClient.PostRequest<object, FedXAPIResponse>(baseUrl, postData);
             if (response == default(FedXAPIResponse))
-                throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
+                offerResponse.BestPrice = decimal.Zero;
             else
                 offerResponse.BestPrice = response.Amount;
 

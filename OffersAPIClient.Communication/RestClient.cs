@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using OffersAPIClient.Utils;
 using OffersAPIClient.Utils.Extension;
 using System.Net.Http;
 using System.Net.Mime;
@@ -18,23 +19,19 @@ namespace OffersAPIClient.Communication
             _config = configuration;
         }
 
-        public async Task<TOut> PostRequest<TIn, TOut>(string uri, TIn content, string application)
+        public async Task<TOut> PostRequest<TIn, TOut>(string uri, TIn content, string mediaType)
         {
-            StringContent serialized;
-            if (application == MediaTypeNames.Application.Xml)
-                serialized = new StringContent(Extension.Serialize(content).ToString(), Encoding.UTF8, "application/xml");
-            else
-                serialized = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+            StringContent serialized = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, mediaType);
 
             return await SendRequest<TOut>(uri, serialized);
         }
 
         private async Task<TOut> SendRequest<TOut>(string uri, StringContent postData)
         {
-            if (!client.DefaultRequestHeaders.Contains("ApiKey"))
-                client.DefaultRequestHeaders.Add("ApiKey", _config.GetValue<string>("ApiKey"));
+            if (!client.DefaultRequestHeaders.Contains(ConfigKey.ApiKey))
+                client.DefaultRequestHeaders.Add(ConfigKey.ApiKey, _config.GetValue<string>(ConfigKey.ApiKey));
 
-            var MaxRetries = _config.GetValue<int>("ReTryCount");
+            var MaxRetries = _config.GetValue<int>(ConfigKey.ReTryCount);
 
             for (int i = 0; i < MaxRetries; i++)
             {

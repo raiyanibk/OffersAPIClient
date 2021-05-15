@@ -33,7 +33,7 @@ namespace OffersAPIClient.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var exceptionMessage = exception.InnerException != null ? exception.InnerException.Message : exception.Message;
+            var exceptionMessage = exception.Message != null ? exception.Message : exception.InnerException?.Message;
             var statusCode = (int)HttpStatusCode.InternalServerError;
             switch (exception.GetType().Name)
             {

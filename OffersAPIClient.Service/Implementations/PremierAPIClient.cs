@@ -33,8 +33,9 @@ namespace OffersAPIClient.Service
             };
 
             var response = await _restClient.PostRequest<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData, MediaTypeNames.Application.Xml);
-            if(response == default(PremierAPIResponse))
-                throw new Exception($"Something went wrong in {offerResponse.CompanyName} : GetOffer API");
+            
+            if (response == default(PremierAPIResponse))
+                offerResponse.BestPrice = decimal.Zero;
             else
                 offerResponse.BestPrice = response.Quote;
 
