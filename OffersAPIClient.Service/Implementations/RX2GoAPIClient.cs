@@ -1,28 +1,27 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Utils.Models;
 using OffersAPIClient.Communication;
-using System;
+using OffersAPIClient.Utils.Models;
 using System.Threading.Tasks;
 
 namespace OffersAPIClient.Service
 {
     public class RX2GoAPIClient : IOfferClient
     {
-        private IConfiguration Configuration { get; }
+        private IConfiguration _configuration { get; }
         private readonly IRestClient _restClient;
 
         public RX2GoAPIClient(IConfiguration configuration, IRestClient restClient)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _restClient = restClient;
         }
 
         public async Task<BestOfferResponse> GetOfferAsync(BestOfferRequest request)
         {
-            var baseUrl = Configuration.GetValue<string>("RX2GoAPIConfig:BaseURL");
-            var apiKey = Configuration.GetValue<string>("RX2GoAPIConfig:ApiKey");
+            var baseUrl = _configuration.GetValue<string>("RX2GoAPIConfig:BaseURL");
+            var apiKey = _configuration.GetValue<string>("RX2GoAPIConfig:ApiKey");
             var offerResponse = new BestOfferResponse();
-            offerResponse.CompanyName = Configuration.GetValue<string>("RX2GoAPIConfig:CompanyName");
+            offerResponse.CompanyName = _configuration.GetValue<string>("RX2GoAPIConfig:CompanyName");
 
             var postData = new RX2GoAPIRequest
             {

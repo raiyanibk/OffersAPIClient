@@ -1,15 +1,9 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OffersAPIClient.Controllers;
+using Moq;
 using OffersAPIClient.Service;
 using OffersAPIClient.Utils.Models;
-using System;
-using System.Threading.Tasks;
-using Moq;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Communication;
+using System.Threading.Tasks;
 
 namespace OffersAPIClient.Test
 {
@@ -17,15 +11,9 @@ namespace OffersAPIClient.Test
     public class OffersServiceMoqTest
     {
         private OffersService _offersService;
-        private readonly Mock<IEnumerable<IOfferClient>> mock = new Mock<IEnumerable<IOfferClient>>();
 
-        private readonly FedXAPIClient _fedxapiclient;
-        private readonly PremierAPIClient _premierapiclient;
-        private readonly RX2GoAPIClient _rx2goapiclient;
         private readonly IList<IOfferClient> _clientOffers;
 
-        private readonly Mock<IConfiguration> _config = new Mock<IConfiguration>();
-        private readonly Mock<IRestClient> _restClient = new Mock<IRestClient>();
         private readonly Mock<IOfferClient> _fedXAPIClientMock;
         private readonly Mock<IOfferClient> _premierAPIClientMock;
         private readonly Mock<IOfferClient> _rX2GoAPIClientMock;

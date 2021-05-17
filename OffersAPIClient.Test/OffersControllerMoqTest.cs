@@ -1,13 +1,10 @@
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using OffersAPIClient.Controllers;
 using OffersAPIClient.Service;
 using OffersAPIClient.Utils.Models;
-using System;
 using System.Threading.Tasks;
-using Moq;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 
 namespace OffersAPIClient.Test
 {

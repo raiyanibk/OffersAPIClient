@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Utils.Models;
+﻿using OffersAPIClient.Utils.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,20 +7,20 @@ namespace OffersAPIClient.Service
 {
     public class OffersService : IOffersService
     {
-        private readonly IEnumerable<IOfferClient> _getOffers;
+        private readonly IEnumerable<IOfferClient> _offerClients;
 
         public OffersService(IEnumerable<IOfferClient> getOffers)
         {
-            _getOffers = getOffers;
+            _offerClients = getOffers;
         }
 
         public async Task<BestOfferResponse> GetBestDealAsync(BestOfferRequest request)
         {
             List<Task<BestOfferResponse>> listOffers = new List<Task<BestOfferResponse>>();
 
-            foreach (var offer in _getOffers)
+            foreach (var offerClient in _offerClients)
             {
-                listOffers.Add(offer.GetOfferAsync(request));
+                listOffers.Add(offerClient.GetOfferAsync(request));
             }
 
             var listOffersData = await Task.WhenAll(listOffers);

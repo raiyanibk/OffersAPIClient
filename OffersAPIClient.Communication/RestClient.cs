@@ -11,7 +11,7 @@ namespace OffersAPIClient.Communication
 {
     public class RestClient : IRestClient
     {
-        public static readonly HttpClient client = new HttpClient();
+        private static readonly HttpClient _client = new HttpClient();
         private IConfiguration _config { get; }
 
         public RestClient(IConfiguration configuration)
@@ -28,14 +28,14 @@ namespace OffersAPIClient.Communication
 
         private async Task<TOut> SendRequestAsync<TOut>(string uri, StringContent postData, string apiKey)
         {
-            if (!client.DefaultRequestHeaders.Contains(ConfigKey.ApiKey))
-                client.DefaultRequestHeaders.Add(ConfigKey.ApiKey, apiKey);
+            if (!_client.DefaultRequestHeaders.Contains(ConfigKey.ApiKey))
+                _client.DefaultRequestHeaders.Add(ConfigKey.ApiKey, apiKey);
 
-            var MaxRetries = _config.GetValue<int>(ConfigKey.ReTryCount);
+            var maxRetries = _config.GetValue<int>(ConfigKey.ReTryCount);
 
-            for (int i = 0; i < MaxRetries; i++)
+            for (int i = 0; i < maxRetries; i++)
             {
-                using (HttpResponseMessage response = await client.PostAsync(uri, postData))
+                using (HttpResponseMessage response = await _client.PostAsync(uri, postData))
                 {
                     if (response.IsSuccessStatusCode)
                     {

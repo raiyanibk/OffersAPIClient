@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OffersAPIClient.Utils.Models;
 using OffersAPIClient.Communication;
-using System;
+using OffersAPIClient.Utils.Models;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -9,22 +8,22 @@ namespace OffersAPIClient.Service
 {
     public class PremierAPIClient : IOfferClient
     {
-        private IConfiguration Configuration { get; }
+        private IConfiguration _configuration { get; }
         private readonly IRestClient _restClient;
 
         public PremierAPIClient(IConfiguration configuration, IRestClient restClient)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _restClient = restClient;
         }
 
         public async Task<BestOfferResponse> GetOfferAsync(BestOfferRequest request)
         {
-            var baseUrl = Configuration.GetValue<string>("PremierAPIConfig:BaseURL");
-            var apiKey = Configuration.GetValue<string>("PremierAPIConfig:ApiKey");
+            var baseUrl = _configuration.GetValue<string>("PremierAPIConfig:BaseURL");
+            var apiKey = _configuration.GetValue<string>("PremierAPIConfig:ApiKey");
 
             var offerResponse = new BestOfferResponse();
-            offerResponse.CompanyName = Configuration.GetValue<string>("PremierAPIConfig:CompanyName");
+            offerResponse.CompanyName = _configuration.GetValue<string>("PremierAPIConfig:CompanyName");
 
             var postData = new PremierAPIRequest
             {

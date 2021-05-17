@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mime;
-using System.Text;
+﻿using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace OffersAPIClient.Communication
