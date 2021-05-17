@@ -26,24 +26,21 @@ namespace OffersAPIClient.Test
 
         private readonly Mock<IConfiguration> _config = new Mock<IConfiguration>();
         private readonly Mock<IRestClient> _restClient = new Mock<IRestClient>();
-        private readonly Mock<FedXAPIClient> _fedXAPIClientMock = new Mock<FedXAPIClient>();
-        private readonly Mock<PremierAPIClient> _premierAPIClientMock = new Mock<PremierAPIClient>();
-        private readonly Mock<RX2GoAPIClient> _rX2GoAPIClientMock = new Mock<RX2GoAPIClient>();
+        private readonly Mock<IOfferClient> _fedXAPIClientMock;
+        private readonly Mock<IOfferClient> _premierAPIClientMock;
+        private readonly Mock<IOfferClient> _rX2GoAPIClientMock;
         public OffersServiceMoqTest()
         {
-            _fedxapiclient = new FedXAPIClient(_config.Object, _restClient.Object);
-            _premierapiclient = new PremierAPIClient(_config.Object, _restClient.Object);
-            _rx2goapiclient = new RX2GoAPIClient(_config.Object, _restClient.Object);
-            _clientOffers = new List<IOfferClient> { _fedxapiclient, _premierapiclient, _rx2goapiclient };
-            _offersService = new OffersService(_clientOffers);
+            _fedXAPIClientMock = new Mock<IOfferClient>();
+            _premierAPIClientMock = new Mock<IOfferClient>();
+            _rX2GoAPIClientMock = new Mock<IOfferClient>();
 
-            _fedXAPIClientMock = new Mock<FedXAPIClient>(_config.Object, _restClient.Object);
-            _premierAPIClientMock = new Mock<PremierAPIClient>(_config.Object, _restClient.Object);
-            _rX2GoAPIClientMock = new Mock<RX2GoAPIClient>(_config.Object, _restClient.Object);
+            _clientOffers = new List<IOfferClient> { _fedXAPIClientMock.Object, _premierAPIClientMock.Object, _rX2GoAPIClientMock.Object };
+            _offersService = new OffersService(_clientOffers);
         }
 
         [TestMethod]
-        public async Task GetBestDeal_ShouldReturnBestDealDetail()
+        public async Task GetBestDeal_When_AllCompanies_Are_Returning_Response()
         {
 
             // Arrange
@@ -72,21 +69,142 @@ namespace OffersAPIClient.Test
                 CompanyName = "Rx2Go"
             };
 
-            _config.Setup(c => c.GetSection(It.IsAny<String>())).Returns(new Mock<IConfigurationSection>().Object);
-
-            _fedXAPIClientMock.Setup(a => a.GetOfferAsync(request)).ReturnsAsync(fedxResponse);
-            _premierAPIClientMock.Setup(a => a.GetOfferAsync(request)).ReturnsAsync(premierResponse);
-            _rX2GoAPIClientMock.Setup(a => a.GetOfferAsync(request)).ReturnsAsync(rx2Response);
+            SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
 
 
             // Act 
-            var getBestDeal = await _offersService.GetBestDealAsync(request);
+            int expectedValue = 100;
+            var bestDeal = await _offersService.GetBestDealAsync(request);
 
             // Assert
-            var value = getBestDeal.BestPrice;
-            Assert.AreEqual(value, 110);
+            var actualValue = bestDeal.BestPrice;
+            Assert.AreEqual(actualValue, expectedValue);
         }
 
-        
+        [TestMethod]
+        public async Task GetBestDeal_When_API_OneCompany_ReturningZero()
+        {
+
+            // Arrange
+            var request = new BestOfferRequest
+            {
+                Source = "S1",
+                Destination = "D1",
+                Carton = new int[] { 4, 4, 4 }
+            };
+
+            var fedxResponse = new BestOfferResponse
+            {
+                BestPrice = 0,
+                CompanyName = "FedX"
+            };
+
+            var premierResponse = new BestOfferResponse
+            {
+                BestPrice = 90,
+                CompanyName = "Premier"
+            };
+
+            var rx2Response = new BestOfferResponse
+            {
+                BestPrice = 120,
+                CompanyName = "Rx2Go"
+            };
+
+            SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
+
+            // Act 
+            int expectedValue = 90;
+            var bestDeal = await _offersService.GetBestDealAsync(request);
+
+            // Assert
+            var actualValue = bestDeal.BestPrice;
+            Assert.AreEqual(actualValue, expectedValue);
+        }
+
+        [TestMethod]
+        public async Task GetBestDeal_When_API_OneCompany_ReturningNull()
+        {
+
+            // Arrange
+            var request = new BestOfferRequest
+            {
+                Source = "S1",
+                Destination = "D1",
+                Carton = new int[] { 4, 4, 4 }
+            };
+
+            BestOfferResponse fedxResponse = null;
+
+            var premierResponse = new BestOfferResponse
+            {
+                BestPrice = 90,
+                CompanyName = "Premier"
+            };
+
+            var rx2Response = new BestOfferResponse
+            {
+                BestPrice = 120,
+                CompanyName = "Rx2Go"
+            };
+
+            SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
+
+            // Act 
+            int expectedValue = 90;
+            var bestDeal = await _offersService.GetBestDealAsync(request);
+
+            // Assert
+            var actualValue = bestDeal.BestPrice;
+            Assert.AreEqual(actualValue, expectedValue);
+        }
+
+        [TestMethod]
+        public async Task GetBestDeal_When_API_ReturningNegativeValue()
+        {
+
+            // Arrange
+            var request = new BestOfferRequest
+            {
+                Source = "S1",
+                Destination = "D1",
+                Carton = new int[] { 4, 4, 4 }
+            };
+
+            BestOfferResponse fedxResponse = new BestOfferResponse
+            {
+                BestPrice = -80,
+                CompanyName = "Premier"
+            }; ;
+
+            var premierResponse = new BestOfferResponse
+            {
+                BestPrice = -100,
+                CompanyName = "Premier"
+            };
+
+            var rx2Response = new BestOfferResponse
+            {
+                BestPrice = -120,
+                CompanyName = "Rx2Go"
+            };
+
+            SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
+
+            // Act 
+            int expectedValue = 90;
+            var bestDeal = await _offersService.GetBestDealAsync(request);
+
+            // Assert
+            var actualValue = bestDeal.BestPrice;
+            Assert.AreEqual(actualValue, expectedValue);
+        }
+
+        private void SetupGetOfferMethod(BestOfferRequest request, BestOfferResponse fedxResponse, BestOfferResponse premierResponse, BestOfferResponse rx2Response)
+        {
+            _fedXAPIClientMock.Setup(a => a.GetOfferAsync(request)).ReturnsAsync(fedxResponse);
+            _premierAPIClientMock.Setup(a => a.GetOfferAsync(request)).ReturnsAsync(premierResponse);
+            _rX2GoAPIClientMock.Setup(a => a.GetOfferAsync(request)).ReturnsAsync(rx2Response);
+        }
     }
 }

@@ -17,9 +17,12 @@ namespace OffersAPIClient.Controllers
 
         [HttpPost]
         [Route("getbestdeal")]
-        public async Task<IActionResult> GetBestDeal(BestOfferRequest request)
+        public async Task<IActionResult> GetBestDealAsync(BestOfferRequest request)
         {
             var bestDeal = await _offersService.GetBestDealAsync(request);
+
+            if (bestDeal == null)
+                return NotFound("No correct deal found");
 
             return Ok(bestDeal);
         }

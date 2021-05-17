@@ -4,6 +4,11 @@ using System.Text;
 
 namespace OffersAPIClient.Utils.Models
 {
+    public class APIResponse
+    {
+        public int StatusCode { get; set; }
+        public string Message { get; set; }
+    }
     public class PremierAPIRequest
     {
         public string Source { get; set; }
@@ -30,18 +35,20 @@ namespace OffersAPIClient.Utils.Models
         public decimal BestPrice { get; set; }
     }
 
-    public class RX2GoAPIResponse
+    public class RX2GoAPIResponse : APIResponse
     {
         public decimal Total { get; set; }
     }
 
-    public class FedXAPIResponse
+    public class FedXAPIResponse : APIResponse
     {
         public decimal Amount { get; set; }
     }
 
-    public class PremierAPIResponse
+    public class PremierAPIResponse : APIResponse
     {
         public decimal Quote { get; set; }
     }
+
+    
 }

@@ -34,14 +34,35 @@ namespace OffersAPIClient.Test
 
             var response = new BestOfferResponse { CompanyName = "FedX", BestPrice = 110 };
 
-            _offersService.Setup(a => a.GetBestDealAsync(request)).ReturnsAsync(response);
+            _offersService.Setup(offerService => offerService.GetBestDealAsync(request)).ReturnsAsync(response);
 
             // Act 
-            var getBestDeal = await _offerController.GetBestDeal(request);
+            int expectedResult = 110;
+            var bestDeal = await _offerController.GetBestDealAsync(request);
 
             // Assert
-            var value = ((BestOfferResponse)((ObjectResult)getBestDeal).Value).BestPrice;
-            Assert.AreEqual(value, 110);
+            var actualResult = ((BestOfferResponse)((ObjectResult)bestDeal).Value).BestPrice;
+            Assert.AreEqual(actualResult, expectedResult);
+        }
+
+        [TestMethod]
+        public async Task GetBestDeal_When_No_Offer_Return()
+        {
+            var request = new BestOfferRequest
+            {
+                Source = "S1",
+                Destination = "D1",
+                Carton = new int[] { 4, 4, 4 }
+            };
+
+            BestOfferResponse response = null;
+
+            _offersService.Setup(offerService => offerService.GetBestDealAsync(request)).ReturnsAsync(response);
+
+            int expectedResult = 404;
+            var actualBestDeal = await _offerController.GetBestDealAsync(request);
+            
+            Assert.AreEqual(((ObjectResult)actualBestDeal).StatusCode, expectedResult);
         }
     }
 }

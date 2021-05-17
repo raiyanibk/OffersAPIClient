@@ -25,8 +25,16 @@ namespace OffersAPIClient.Service
             }
 
             var listOffersData = await Task.WhenAll(listOffers);
-            var bestPrice = listOffersData.Where(a => a.BestPrice > 0).Min(a => a.BestPrice);
-            var bestOffer = listOffersData.FirstOrDefault(a => a.BestPrice == bestPrice);
+
+            // Negative value handling
+            var bestPrice = listOffersData.Where(a => a != null && a.BestPrice > 0);
+            decimal bestPriceValue = decimal.Zero;
+            if(bestPrice.Count() > 0)
+            {
+                bestPriceValue = bestPrice.Min(a => a.BestPrice);
+            }
+
+            var bestOffer = listOffersData.FirstOrDefault(a => a.BestPrice == bestPriceValue);
 
             return bestOffer;
         }
