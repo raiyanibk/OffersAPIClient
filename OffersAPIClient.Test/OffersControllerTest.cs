@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 namespace OffersAPIClient.Test
 {
     [TestClass]
-    public class OffersControllerMoqTest
+    public class OffersControllerTest
     {
         private readonly OffersController _offerController;
         private readonly Mock<IOffersService> _offersService = new Mock<IOffersService>();
-        public OffersControllerMoqTest()
+        public OffersControllerTest()
         {
             _offerController = new OffersController(_offersService.Object);
         }
 
         [TestMethod]
-        public async Task GetBestDeal_ShouldReturnBestDealDetail()
+        public async Task GetBestDeal_ShouldReturnBestDeal()
         {
-            // Arrange
+            
             var request = new BestOfferRequest
             {
                 Source = "S1",
@@ -33,11 +33,11 @@ namespace OffersAPIClient.Test
 
             _offersService.Setup(offerService => offerService.GetBestDealAsync(request)).ReturnsAsync(response);
 
-            // Act 
+            
             int expectedResult = 110;
             var bestDeal = await _offerController.GetBestDealAsync(request);
 
-            // Assert
+            
             var actualResult = ((BestOfferResponse)((ObjectResult)bestDeal).Value).BestPrice;
             Assert.AreEqual(actualResult, expectedResult);
         }

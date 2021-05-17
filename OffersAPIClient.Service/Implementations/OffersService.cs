@@ -33,7 +33,8 @@ namespace OffersAPIClient.Service
                 bestPriceValue = bestPrice.Min(a => a.BestPrice);
             }
 
-            var bestOffer = listOffersData.FirstOrDefault(a => a.BestPrice == bestPriceValue);
+            var filteredData = listOffersData.Where(a => a != null);
+            BestOfferResponse bestOffer = filteredData != null ? filteredData.FirstOrDefault(a => a.BestPrice == bestPriceValue) : null;
 
             return bestOffer;
         }

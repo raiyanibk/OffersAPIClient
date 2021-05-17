@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace OffersAPIClient.Test
 {
     [TestClass]
-    public class OffersServiceMoqTest
+    public class OffersServiceTest
     {
         private OffersService _offersService;
 
@@ -17,7 +17,7 @@ namespace OffersAPIClient.Test
         private readonly Mock<IOfferClient> _fedXAPIClientMock;
         private readonly Mock<IOfferClient> _premierAPIClientMock;
         private readonly Mock<IOfferClient> _rX2GoAPIClientMock;
-        public OffersServiceMoqTest()
+        public OffersServiceTest()
         {
             _fedXAPIClientMock = new Mock<IOfferClient>();
             _premierAPIClientMock = new Mock<IOfferClient>();
@@ -30,8 +30,6 @@ namespace OffersAPIClient.Test
         [TestMethod]
         public async Task GetBestDeal_When_AllCompanies_Are_Returning_Response()
         {
-
-            // Arrange
             var request = new BestOfferRequest
             {
                 Source = "S1",
@@ -59,12 +57,8 @@ namespace OffersAPIClient.Test
 
             SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
 
-
-            // Act 
             int expectedValue = 100;
             var bestDeal = await _offersService.GetBestDealAsync(request);
-
-            // Assert
             var actualValue = bestDeal.BestPrice;
             Assert.AreEqual(actualValue, expectedValue);
         }
@@ -72,27 +66,22 @@ namespace OffersAPIClient.Test
         [TestMethod]
         public async Task GetBestDeal_When_API_OneCompany_ReturningZero()
         {
-
-            // Arrange
             var request = new BestOfferRequest
             {
                 Source = "S1",
                 Destination = "D1",
                 Carton = new int[] { 4, 4, 4 }
             };
-
             var fedxResponse = new BestOfferResponse
             {
                 BestPrice = 0,
                 CompanyName = "FedX"
             };
-
             var premierResponse = new BestOfferResponse
             {
                 BestPrice = 90,
                 CompanyName = "Premier"
             };
-
             var rx2Response = new BestOfferResponse
             {
                 BestPrice = 120,
@@ -101,20 +90,45 @@ namespace OffersAPIClient.Test
 
             SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
 
-            // Act 
             int expectedValue = 90;
             var bestDeal = await _offersService.GetBestDealAsync(request);
-
-            // Assert
             var actualValue = bestDeal.BestPrice;
             Assert.AreEqual(actualValue, expectedValue);
         }
 
         [TestMethod]
-        public async Task GetBestDeal_When_API_OneCompany_ReturningNull()
+        public async Task GetBestDeal_When_OneCompany_ReturningNull()
         {
+            var request = new BestOfferRequest
+            {
+                Source = "S1",
+                Destination = "D1",
+                Carton = new int[] { 4, 4, 4 }
+            };
+            BestOfferResponse fedxResponse = null;
 
-            // Arrange
+            var premierResponse = new BestOfferResponse
+            {
+                BestPrice = 90,
+                CompanyName = "Premier"
+            };
+            var rx2Response = new BestOfferResponse
+            {
+                BestPrice = 120,
+                CompanyName = "Rx2Go"
+            };
+
+            SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
+
+            int expectedValue = 90;
+            var bestDeal = await _offersService.GetBestDealAsync(request);
+            var actualValue = bestDeal.BestPrice;
+            Assert.AreEqual(actualValue, expectedValue);
+        }
+
+        [TestMethod]
+        public async Task GetBestDeal_When_AllCompanies_ReturningNull()
+        {
             var request = new BestOfferRequest
             {
                 Source = "S1",
@@ -123,54 +137,36 @@ namespace OffersAPIClient.Test
             };
 
             BestOfferResponse fedxResponse = null;
-
-            var premierResponse = new BestOfferResponse
-            {
-                BestPrice = 90,
-                CompanyName = "Premier"
-            };
-
-            var rx2Response = new BestOfferResponse
-            {
-                BestPrice = 120,
-                CompanyName = "Rx2Go"
-            };
+            BestOfferResponse premierResponse = null;
+            BestOfferResponse rx2Response = null;
 
             SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
 
-            // Act 
-            int expectedValue = 90;
-            var bestDeal = await _offersService.GetBestDealAsync(request);
+            BestOfferResponse expectedResult = null;
+            var actualResult = await _offersService.GetBestDealAsync(request);
 
-            // Assert
-            var actualValue = bestDeal.BestPrice;
-            Assert.AreEqual(actualValue, expectedValue);
+            Assert.AreEqual(actualResult, expectedResult);
         }
 
         [TestMethod]
         public async Task GetBestDeal_When_API_ReturningNegativeValue()
         {
-
-            // Arrange
             var request = new BestOfferRequest
             {
                 Source = "S1",
                 Destination = "D1",
                 Carton = new int[] { 4, 4, 4 }
             };
-
             BestOfferResponse fedxResponse = new BestOfferResponse
             {
                 BestPrice = -80,
                 CompanyName = "Premier"
             }; ;
-
             var premierResponse = new BestOfferResponse
             {
                 BestPrice = -100,
                 CompanyName = "Premier"
             };
-
             var rx2Response = new BestOfferResponse
             {
                 BestPrice = -120,
@@ -179,13 +175,10 @@ namespace OffersAPIClient.Test
 
             SetupGetOfferMethod(request, fedxResponse, premierResponse, rx2Response);
 
-            // Act 
-            int expectedValue = 90;
-            var bestDeal = await _offersService.GetBestDealAsync(request);
+            BestOfferResponse expectedResult = null;
+            var actualResult = await _offersService.GetBestDealAsync(request);
 
-            // Assert
-            var actualValue = bestDeal.BestPrice;
-            Assert.AreEqual(actualValue, expectedValue);
+            Assert.AreEqual(actualResult, expectedResult);
         }
 
         private void SetupGetOfferMethod(BestOfferRequest request, BestOfferResponse fedxResponse, BestOfferResponse premierResponse, BestOfferResponse rx2Response)
