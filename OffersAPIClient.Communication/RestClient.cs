@@ -19,17 +19,17 @@ namespace OffersAPIClient.Communication
             _config = configuration;
         }
 
-        public async Task<TOut> PostRequest<TIn, TOut>(string uri, TIn content, string mediaType)
+        public async Task<TOut> PostRequestAsync<TIn, TOut>(string uri, TIn content, string apiKey, string mediaType)
         {
             StringContent serialized = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, mediaType);
 
-            return await SendRequest<TOut>(uri, serialized);
+            return await SendRequestAsync<TOut>(uri, serialized, apiKey);
         }
 
-        private async Task<TOut> SendRequest<TOut>(string uri, StringContent postData)
+        private async Task<TOut> SendRequestAsync<TOut>(string uri, StringContent postData, string apiKey)
         {
             if (!client.DefaultRequestHeaders.Contains(ConfigKey.ApiKey))
-                client.DefaultRequestHeaders.Add(ConfigKey.ApiKey, _config.GetValue<string>(ConfigKey.ApiKey));
+                client.DefaultRequestHeaders.Add(ConfigKey.ApiKey, apiKey);
 
             var MaxRetries = _config.GetValue<int>(ConfigKey.ReTryCount);
 

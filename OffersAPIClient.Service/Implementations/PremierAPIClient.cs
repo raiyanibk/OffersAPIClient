@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OffersAPIClient.Service
 {
-    public class PremierAPIClient : IGetClientOffer
+    public class PremierAPIClient : IOfferClient
     {
         private IConfiguration Configuration { get; }
         private readonly IRestClient _restClient;
@@ -18,9 +18,10 @@ namespace OffersAPIClient.Service
             _restClient = restClient;
         }
 
-        public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
+        public async Task<BestOfferResponse> GetOfferAsync(BestOfferRequest request)
         {
             var baseUrl = Configuration.GetValue<string>("PremierAPIConfig:BaseURL");
+            var apiKey = Configuration.GetValue<string>("PremierAPIConfig:ApiKey");
 
             var offerResponse = new BestOfferResponse();
             offerResponse.CompanyName = Configuration.GetValue<string>("PremierAPIConfig:CompanyName");
@@ -32,8 +33,8 @@ namespace OffersAPIClient.Service
                 Packages = string.Join(",", request.Carton)
             };
 
-            var response = await _restClient.PostRequest<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData, MediaTypeNames.Application.Xml);
-            
+            var response = await _restClient.PostRequestAsync<PremierAPIRequest, PremierAPIResponse>(baseUrl, postData, apiKey, MediaTypeNames.Application.Xml);
+
             if (response == default(PremierAPIResponse))
                 offerResponse.BestPrice = decimal.Zero;
             else

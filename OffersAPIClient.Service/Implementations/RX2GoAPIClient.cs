@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OffersAPIClient.Service
 {
-    public class RX2GoAPIClient : IGetClientOffer
+    public class RX2GoAPIClient : IOfferClient
     {
         private IConfiguration Configuration { get; }
         private readonly IRestClient _restClient;
@@ -17,20 +17,21 @@ namespace OffersAPIClient.Service
             _restClient = restClient;
         }
 
-        public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
+        public async Task<BestOfferResponse> GetOfferAsync(BestOfferRequest request)
         {
             var baseUrl = Configuration.GetValue<string>("RX2GoAPIConfig:BaseURL");
+            var apiKey = Configuration.GetValue<string>("RX2GoAPIConfig:ApiKey");
             var offerResponse = new BestOfferResponse();
             offerResponse.CompanyName = Configuration.GetValue<string>("RX2GoAPIConfig:CompanyName");
 
-            var postData = new
+            var postData = new RX2GoAPIRequest
             {
                 SourceAddress = request.Source,
                 DestinationAddress = request.Destination,
                 CartonDismensions = request.Carton
             };
 
-            var response = await _restClient.PostRequest<object, RX2GoAPIResponse>(baseUrl, postData);
+            var response = await _restClient.PostRequestAsync<object, RX2GoAPIResponse>(baseUrl, postData, apiKey);
 
             if (response == default(RX2GoAPIResponse))
                 offerResponse.BestPrice = decimal.Zero;

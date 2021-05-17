@@ -34,7 +34,7 @@ namespace OffersAPIClient.Test
 
             var response = new BestOfferResponse { CompanyName = "FedX", BestPrice = 110 };
 
-            _offersService.Setup(a => a.GetBestDeal(request)).ReturnsAsync(response);
+            _offersService.Setup(a => a.GetBestDealAsync(request)).ReturnsAsync(response);
 
             // Act 
             var getBestDeal = await _offerController.GetBestDeal(request);

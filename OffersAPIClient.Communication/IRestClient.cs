@@ -8,6 +8,6 @@ namespace OffersAPIClient.Communication
 {
     public interface IRestClient
     {
-        Task<TOut> PostRequest<TIn, TOut>(string uri, TIn content, string application = MediaTypeNames.Application.Json);
+        Task<TOut> PostRequestAsync<TIn, TOut>(string uri, TIn content, string apiKey, string application = MediaTypeNames.Application.Json);
     }
 }

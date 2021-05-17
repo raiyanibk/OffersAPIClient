@@ -11,6 +11,19 @@ namespace OffersAPIClient.Utils.Models
         public string Packages { get; set; }
     }
 
+    public class FedXAPIRequest
+    {
+        public string Consignee { get; set; }
+        public string Consignor { get; set; }
+        public int[] Cartons { get; set; }
+    }
+    public class RX2GoAPIRequest
+    {
+        public string SourceAddress { get; set; }
+        public string DestinationAddress { get; set; }
+        public int[] CartonDismensions { get; set; }
+    }
+
     public class BestOfferResponse
     {
         public string CompanyName { get; set; }

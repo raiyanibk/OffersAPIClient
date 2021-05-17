@@ -5,6 +5,6 @@ namespace OffersAPIClient.Service
 {
     public interface IOffersService
     {
-        Task<BestOfferResponse> GetBestDeal(BestOfferRequest request);
+        Task<BestOfferResponse> GetBestDealAsync(BestOfferRequest request);
     }
 }

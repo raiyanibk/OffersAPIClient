@@ -26,9 +26,9 @@ namespace OffersAPIClient
 
             services.AddTransient<IOffersService, OffersService>();
             
-            services.AddTransient<IGetClientOffer, RX2GoAPIClient>();
-            services.AddTransient<IGetClientOffer, FedXAPIClient>();
-            services.AddTransient<IGetClientOffer, PremierAPIClient>();
+            services.AddTransient<IOfferClient, RX2GoAPIClient>();
+            services.AddTransient<IOfferClient, FedXAPIClient>();
+            services.AddTransient<IOfferClient, PremierAPIClient>();
 
             services.AddTransient<IRestClient, RestClient>();
         }

@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace OffersAPIClient.Service
 {
-    public interface IGetClientOffer
+    public interface IOfferClient
     {
-        Task<BestOfferResponse> GetOffer(BestOfferRequest request);
+        Task<BestOfferResponse> GetOfferAsync(BestOfferRequest request);
     }
 
 }

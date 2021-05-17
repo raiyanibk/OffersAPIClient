@@ -8,20 +8,20 @@ namespace OffersAPIClient.Service
 {
     public class OffersService : IOffersService
     {
-        private readonly IEnumerable<IGetClientOffer> _getOffers;
+        private readonly IEnumerable<IOfferClient> _getOffers;
 
-        public OffersService(IEnumerable<IGetClientOffer> getOffers)
+        public OffersService(IEnumerable<IOfferClient> getOffers)
         {
             _getOffers = getOffers;
         }
 
-        public async Task<BestOfferResponse> GetBestDeal(BestOfferRequest request)
+        public async Task<BestOfferResponse> GetBestDealAsync(BestOfferRequest request)
         {
             List<Task<BestOfferResponse>> listOffers = new List<Task<BestOfferResponse>>();
 
             foreach (var offer in _getOffers)
             {
-                listOffers.Add(offer.GetOffer(request));
+                listOffers.Add(offer.GetOfferAsync(request));
             }
 
             var listOffersData = await Task.WhenAll(listOffers);

@@ -6,31 +6,32 @@ using System.Threading.Tasks;
 
 namespace OffersAPIClient.Service
 {
-    public class FedXAPIClient : IGetClientOffer
+    public class FedXAPIClient : IOfferClient
     {
-        private IConfiguration Configuration { get; }
+        private IConfiguration _configuration { get; }
         private readonly IRestClient _restClient;
 
         public FedXAPIClient(IConfiguration configuration, IRestClient restClient)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _restClient = restClient;
         }
 
-        public async Task<BestOfferResponse> GetOffer(BestOfferRequest request)
+        public async Task<BestOfferResponse> GetOfferAsync(BestOfferRequest request)
         {
-            var baseUrl = Configuration.GetValue<string>("FedXAPIConfig:BaseURL");
+            var baseUrl = _configuration.GetValue<string>("FedXAPIConfig:BaseURL");
+            var apiKey = _configuration.GetValue<string>("FedXAPIConfig:ApiKey");
             var offerResponse = new BestOfferResponse();
-            offerResponse.CompanyName = Configuration.GetValue<string>("FedXAPIConfig:CompanyName");
+            offerResponse.CompanyName = _configuration.GetValue<string>("FedXAPIConfig:CompanyName");
 
-            var postData = new
+            var postData = new FedXAPIRequest
             {
                 Consignee = request.Source,
                 Consignor = request.Destination,
                 Cartons = request.Carton
             };
 
-            var response = await _restClient.PostRequest<object, FedXAPIResponse>(baseUrl, postData);
+            var response = await _restClient.PostRequestAsync<object, FedXAPIResponse>(baseUrl, postData, apiKey);
             if (response == default(FedXAPIResponse))
                 offerResponse.BestPrice = decimal.Zero;
             else
